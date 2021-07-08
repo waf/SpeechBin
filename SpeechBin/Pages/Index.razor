@@ -1,0 +1,74 @@
+﻿@using Toolbelt.Blazor.SpeechSynthesis
+@using SpeechBin.Steps;
+@inject SpeechSynthesis SpeechSynthesis
+@page "/"
+
+<h1>Speech Bin</h1>
+
+<p class="tag-line">Create your own script, have it spoken, and share the result with friends!</p>
+
+@foreach(var (step, i) in this.Steps.Select((el, i) => (el, i)))
+{
+    <div class="row">
+        
+        <select class="row-type" value="@step.GetType().Name" @onchange="@(e => ChangeForm(e, i))">
+            <option value="@nameof(SayStep)">Say</option>
+            <option value="@nameof(CountDownStep)">Count down</option>
+        </select>
+
+        @if(step is SayStep sayStep)
+        {
+            <EditForm Model="@sayStep" class="say-step">
+                <InputText type="text" @bind-Value="sayStep.Text" />
+            </EditForm>
+        }
+        else if(step is CountDownStep countDownStep)
+        {
+            <EditForm Model="@countDownStep" class="count-down-step">
+                from <InputNumber @bind-Value="countDownStep.CountDownFrom" />.
+                @foreach(var comment in countDownStep.Comments)
+                {
+                    <p>
+                    <text>at</text>
+                    <InputNumber @bind-Value="comment.TimeMark" />
+                    <text>say</text>
+                    <InputText type="text" @bind-Value="comment.Comment" data-lpignore="true" />.
+
+                    <button @onclick="() => countDownStep.Comments.Remove(comment)">X</button>
+                    </p>
+                }
+                <button @onclick="() => countDownStep.Comments.Add(new CommentTiming())">speak at time</button>
+            </EditForm>
+        }
+
+        <button class="row-remove" @onclick="() => RemoveItem(i)">Remove</button>
+    </div>
+}
+
+<button class="add-new-step" @onclick="AppendNewItem" aria-label="Add new line">▼ Add Line ▼</button>
+<button class="speak" @onclick="Speak">Speak!</button>
+
+@code {
+    List<Step> Steps = new()
+    {
+        new SayStep { Text = "Hello World" }
+    };
+
+    public Task Speak() =>
+        new SpeechVisitor(SpeechSynthesis).SpeakAsync(Steps);
+
+    public void AppendNewItem() =>
+        Steps.Add(new SayStep());
+
+    public void RemoveItem(int index) =>
+        Steps.RemoveAt(index);
+
+    void ChangeForm(ChangeEventArgs e, int index)
+    {
+        Steps[index] = e.Value switch
+        {
+            nameof(SayStep) => new SayStep(),
+            nameof(CountDownStep) => new CountDownStep(),
+        };
+    }
+}

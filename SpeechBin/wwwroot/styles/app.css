@@ -1,0 +1,90 @@
+﻿html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+    background-image: url('/img/script.webp');
+    background-size: cover;
+}
+
+* {
+    transition: all ease-in-out 200ms; /* pro design! */
+}
+
+.page {
+    max-width:800px;
+    margin:40px auto 0 auto;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.90);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    padding:10px;
+}
+h1, .tag-line {
+    font-weight: normal;
+    text-align: center;
+    margin: 28px 0;
+}
+
+.row {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin:20px 0;
+}
+.row form {
+    flex-grow: 1;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+.row input[type="text"],
+.row input[type="number"] {
+    background:transparent;
+    border:none;
+    border-bottom: 1px dotted black;
+    font-size:inherit;
+}
+.row input[type="number"] {
+    width: 4em;
+    text-align:center;
+}
+.row input[type="text"]:focus,
+.row input[type="number"]:focus {
+    outline:none;
+    border-bottom: 1px solid hsl(198.00, 100%, 50%);
+}
+
+.row-type {
+    background: transparent;
+    border: none;
+    width: 120px;
+    font-size: inherit;
+}
+
+.add-new-step {
+    width: 100%;
+    height:2em;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.add-new-step:hover {
+    background-color: #fcfcfc;
+}
+.speak {
+    display: block;
+    cursor: pointer;
+    width: 80px;
+    height: 40px;
+    margin: 40px auto 0 auto;
+    border-radius: 40px;
+    border: none;
+    background-color: #757592;
+    color: #EEE;
+    font-weight: bold;
+}
+
+.say-step input[type="text"] {
+    width: 100%;
+}
